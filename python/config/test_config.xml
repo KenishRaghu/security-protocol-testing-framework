@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Security Protocol Testing Framework Configuration
+    
+    INTERVIEW: "Why XML for configuration?"
+    - Human readable and editable
+    - Can be validated against XSD schema
+    - Standard in enterprise environments
+    - Easy to version control
+-->
+<test_configuration version="1.0">
+    
+    <!-- Global test settings -->
+    <settings>
+        <verbose>true</verbose>
+        <timeout_ms>5000</timeout_ms>
+        <retry_count>1</retry_count>
+        <parallel_execution>false</parallel_execution>
+        <log_level>INFO</log_level>
+    </settings>
+    
+    <!-- Environment configuration -->
+    <environment>
+        <openssl_version>1.1.1</openssl_version>
+        <min_key_size>2048</min_key_size>
+        <allowed_ciphers>
+            <cipher>AES-256-GCM</cipher>
+            <cipher>AES-256-CBC</cipher>
+            <cipher>AES-128-GCM</cipher>
+        </allowed_ciphers>
+    </environment>
+    
+    <!-- Test Suites -->
+    <test_suites>
+        
+        <!-- Cryptography Test Suite -->
+        <test_suite name="Cryptography Tests" enabled="true">
+            <description>
+                Tests for cryptographic algorithm implementations
+            </description>
+            
+            <test name="AES-256 Basic Encrypt/Decrypt" enabled="true">
+                <category>symmetric_encryption</category>
+                <priority>high</priority>
+                <expected_duration_ms>10</expected_duration_ms>
+            </test>
+            
+            <test name="AES Wrong Key Fails" enabled="true">
+                <category>symmetric_encryption</category>
+                <priority>high</priority>
+                <description>Negative test: wrong key should not decrypt</description>
+            </test>
+            
+            <test name="SHA-256 Known Answer Test" enabled="true">
+                <category>hashing</category>
+                <priority>critical</priority>
+                <description>Security: reject protocol violations</description>
+            </test>
+            
+            <test name="Client Hello Serialization" enabled="true">
+                <category>message_format</category>
+                <priority>high</priority>
+            </test>
+            
+            <test name="Server Hello Parsing" enabled="true">
+                <category>message_format</category>
+                <priority>high</priority>
+            </test>
+            
+            <test name="Invalid Message Length Handling" enabled="true">
+                <category>error_handling</category>
+                <priority>critical</priority>
+                <description>Security: buffer overflow prevention</description>
+            </test>
+            
+            <test name="Cipher Suite Negotiation" enabled="true">
+                <category>negotiation</category>
+                <priority>high</priority>
+            </test>
+            
+            <test name="Random Number Quality" enabled="true">
+                <category>randomness</category>
+                <priority>critical</priority>
+                <description>Security: weak randomness breaks crypto</description>
+            </test>
+        </test_suite>
+        
+    </test_suites>
+    
+    <!-- Reporting Configuration -->
+    <reporting>
+        <format>json</format>
+        <output_directory>../logs</output_directory>
+        <include_timestamps>true</include_timestamps>
+        <include_stack_traces>true</include_stack_traces>
+    </reporting>
+    
+</test_configuration>>
+                <reference>NIST FIPS 180-4</reference>
+            </test>
+            
+            <test name="SHA-256 Determinism" enabled="true">
+                <category>hashing</category>
+                <priority>high</priority>
+            </test>
+            
+            <test name="SHA-256 Avalanche Effect" enabled="true">
+                <category>hashing</category>
+                <priority>medium</priority>
+                <threshold>64</threshold> <!-- Minimum different bits -->
+            </test>
+            
+            <test name="RSA Key Generation" enabled="true">
+                <category>asymmetric_encryption</category>
+                <priority>high</priority>
+                <key_size>2048</key_size>
+            </test>
+        </test_suite>
+        
+        <!-- Protocol Test Suite -->
+        <test_suite name="Protocol Tests" enabled="true">
+            <description>
+                Tests for security protocol implementations (TLS simulation)
+            </description>
+            
+            <test name="Valid Handshake Flow" enabled="true">
+                <category>state_machine</category>
+                <priority>critical</priority>
+            </test>
+            
+            <test name="Out-of-Order Message Rejected" enabled="true">
+                <category>state_machine</category>
+                <priority>critical</priority
